@@ -1,5 +1,9 @@
 # Домашнее задание к занятию 1 «Введение в Ansible»
 
+## PR с решениями
+  - Основная часть: [PR](https://github.com/vigntom/ansible-homeworks/pull/1)
+  - Необязательная часть: [PR](https://github.com/vigntom/ansible-homeworks/pull/2)
+
 ## Подготовка к выполнению
 
 1. Установите Ansible версии 2.10 или выше.
