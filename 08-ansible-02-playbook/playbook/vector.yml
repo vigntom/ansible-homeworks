@@ -1,0 +1,38 @@
+---
+- name: Install Vector
+  hosts: clickhouse
+  handlers:
+    - name: Start vector service
+      ansible.builtin.shell:
+        cmd: /vector/bin/vector --config /vector/config/vector.toml
+        creates: /var/lib/vector
+      async: 2592000
+      poll: 0
+  tasks:
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: https://packages.timber.io/vector/{{ vector_version.base }}.X/vector-{{ vector_version.full }}-{{ arch }}-unknown-linux-gnu.tar.gz
+        dest: "./vector-{{ vector_version.full}}-{{ arch }}.tar.gz"
+    - name: Create vector support directory
+      ansible.builtin.file:
+        path: /var/lib/vector
+        state: directory
+        mode: '0755'
+    - name: Create vector director
+      ansible.builtin.file:
+        path: vector
+        state: directory
+        mode: '0755'
+    - name: Extract vector
+      ansible.builtin.unarchive:
+        src: vector-{{ vector_version.full}}-{{ arch }}.tar.gz
+        dest: vector
+        remote_src: true
+        extra_opts:
+          - '--strip-component=2'
+    - name: Template vector configs
+      ansible.builtin.template:
+        src: templates/vector.j2
+        dest: vector/config/vector.toml
+        mode: '0644'
+      notify: Start vector service
