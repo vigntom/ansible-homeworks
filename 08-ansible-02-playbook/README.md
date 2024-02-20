@@ -27,3 +27,19 @@
 Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
 
 ---
+
+### Развертывание инфраструктуры на примере докера
+
+   ```
+   cd infra
+   terraform apply
+   cd ../
+   ```
+
+### Установка
+
+   ```
+   cd playbook
+   ansible-playbook -i inventory/prod.yml site.yml
+   ansible-playbook -i inventory/prod.yml vector.yml
+   ```

@@ -2,7 +2,7 @@ locals {
   containers = [
     {
       name: "clickhouse-01",
-      image: "almalinux:8"
+      image: "centos:7"
     },
   ]
 }
