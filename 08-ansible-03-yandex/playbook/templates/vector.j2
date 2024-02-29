@@ -1,0 +1,12 @@
+[sources.dummy_logs]
+type = "demo_logs"
+format = "syslog"
+interval = 1
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = ["dummy_logs"]
+endpoint = "http://clickhouse-server:8123"
+database = "logs"
+table = "access_logs"
+skip_unknown_fields = true

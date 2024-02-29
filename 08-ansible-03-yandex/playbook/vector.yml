@@ -1,0 +1,36 @@
+---
+- name: Install Vector
+  hosts: vector
+  tasks:
+    - block:
+        - name: Install required packages
+          become: true
+          ansible.builtin.apt:
+            name:
+              - apt-transport-https
+            update_cache: true
+        - name: Add repo key for vector
+          become: true
+          ansible.builtin.apt_key:
+            url: https://keys.datadoghq.com/DATADOG_APT_KEY_CURRENT.public
+            keyring: /etc/apt/trusted.gpg.d/datalog-keyring-current.gpg
+            state: present
+        - name: Add vector repo
+          become: true
+          ansible.builtin.apt_repository:
+            repo: >
+              deb
+              [signed-by=/etc/apt/trusted.gpg.d/datalog-keyring-current.gpg]
+              https://apt.vector.dev stable vector-0
+            filename: "/etc/apt/sources.list.d/vector"
+            update_cache: true
+        - name: Install vector
+          become: true
+          ansible.builtin.apt:
+            name: vector
+            update_cache: true
+        - name: Check that vector is running
+          become: true
+          ansible.builtin.service:
+            state: started
+            name: vector
