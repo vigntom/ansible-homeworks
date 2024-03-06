@@ -1,0 +1,46 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+  tasks:
+    - block:
+        - name: Install required packages
+          become: true
+          ansible.builtin.apt:
+            name:
+              - apt-transport-https
+              - ca-certificates
+              - dirmngr
+            update_cache: true
+        - name: add repo key for ClickHouse
+          become: true
+          ansible.builtin.apt_key:
+            keyserver: "hkp://keyserver.ubuntu.com:80"
+            id: "8919F6BD2B48D754"
+        - name: Add clickhouse repo
+          become: true
+          ansible.builtin.apt_repository:
+            repo: "deb https://packages.clickhouse.com/deb stable main"
+            filename: "/etc/apt/sources.list.d/clickhouse.list"
+        - name: Update apt cache
+          become: true
+          ansible.builtin.apt:
+            update_cache: true
+        - name: Install clickhouse server
+          become: true
+          ansible.builtin.apt:
+            name: clickhouse-server
+        - name: Install clickhouse client
+          become: true
+          ansible.builtin.apt:
+            name: clickhouse-client
+        - name: Check that clickhouse is running
+          become: true
+          ansible.builtin.service:
+            state: started
+            name: clickhouse-server
+        - name: Create database
+          ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+          register: create_db
+          failed_when: create_db.rc != 0
+          changed_when: create_db.rc == 0
+            

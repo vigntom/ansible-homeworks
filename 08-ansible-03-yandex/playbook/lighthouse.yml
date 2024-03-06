@@ -1,0 +1,40 @@
+---
+- name: Install Lighthouse
+  hosts: lighthouse
+  tasks:
+    - block:
+        - name: Install required packages
+          become: true
+          ansible.builtin.apt:
+            name:
+              - apt-transport-https
+              - unzip
+            update_cache: true
+        - name: Install ngixn
+          become: true
+          ansible.builtin.apt:
+            name:
+              - nginx
+            update_cache: true
+        - name: Check that nginx is running
+          become: true
+          ansible.builtin.service:
+            state: started
+            name: nginx
+        - name: Create src directory
+          ansible.builtin.file:
+            path: /home/ubuntu/src
+            state: directory
+        - name: Prepare Lighthouse
+          ansible.builtin.unarchive:
+            src: >
+              https://github.com/VKCOM/lighthouse/archive/refs/heads/master.zip
+            dest: /home/ubuntu/src
+            remote_src: true
+        - name: Remove /var/www/html
+          become: true
+          ansible.builtin.command: rm -rf /var/www/html
+        - name: Move lighthouse to /var/www/html
+          become: true
+          ansible.builtin.command: >
+            mv /home/ubuntu/src/lighthouse-master /var/www/html
