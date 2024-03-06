@@ -54,13 +54,13 @@ variable "vms" {
     fraction: 5,
     platform: "standard-v2"
   },
-  # {
-  #   name: "lighthouse",
-  #   cpu: 2,
-  #   memory: 1,
-  #   fraction: 5,
-  #   platform: "standard-v2"
-  # }
+  {
+    name: "lighthouse",
+    cpu: 2,
+    memory: 1,
+    fraction: 5,
+    platform: "standard-v2"
+  }
 ]
 
   description = "VMS instances"
