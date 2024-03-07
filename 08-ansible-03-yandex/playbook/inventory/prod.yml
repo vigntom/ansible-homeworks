@@ -2,18 +2,18 @@
 clickhouse:
   hosts:
     clickhouse-01:
-      ansible_host: 178.154.221.125
+      ansible_host: 178.154.205.28
   vars:
     ansible_user: ubuntu
 vector:
   hosts:
     vector-01:
-      ansible_host: 178.154.220.68
+      ansible_host: 158.160.103.208
   vars:
     ansible_user: ubuntu
 lighthouse:
   hosts:
     lighthouse-01:
-      ansible_host: 178.154.222.217
+      ansible_host: 158.160.125.156
   vars:
     ansible_user: ubuntu

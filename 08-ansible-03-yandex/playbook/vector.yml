@@ -2,7 +2,8 @@
 - name: Install Vector
   hosts: vector
   tasks:
-    - block:
+    - name: Install Vector
+      block:
         - name: Install required packages
           become: true
           ansible.builtin.apt:
